@@ -15,7 +15,9 @@
         android:text="Guess a number between 0 and 10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="20dp"
+        android:textStyle="italic"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGuesses"
