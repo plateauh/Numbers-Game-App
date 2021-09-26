@@ -1,5 +1,7 @@
 package com.example.numbersgameapp
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -28,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         btn = findViewById(R.id.guessBtn)
         btn.setOnClickListener{
             check()
-
             updateRecyclerView()
         }
     }
@@ -43,7 +44,7 @@ class MainActivity : AppCompatActivity() {
         val guessToInt = userGuess.text.toString().toInt()
         if (random == guessToInt){
             guessList.add("That's right! it is $random")
-            userGuess.isEnabled = false
+            customAlert()
         }
         else {
             var plural = "guesses"
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (numberOfGuesses == 0) {
             guessList.add("The number was $random")
-            userGuess.isEnabled = false
+            customAlert()
         }
         userGuess.setText("")
     }
@@ -62,4 +63,30 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = RecyclerViewAdapter(guessList)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
+    private fun customAlert(){
+        // first we create a variable to hold an AlertDialog builder
+        val dialogBuilder = AlertDialog.Builder(this)
+        // then we set up the input
+        val input = EditText(this)
+        // here we set the message of our alert dialog
+        dialogBuilder.setMessage("Want to play again?")
+            // positive button text and action
+            .setPositiveButton("Sure!", DialogInterface.OnClickListener {
+                    _, _ -> recreate()
+                    numberOfGuesses = 3
+            })
+            // negative button text and action
+            .setNegativeButton("Nope", DialogInterface.OnClickListener {
+                    dialog, _ -> dialog.cancel()
+                    userGuess.isEnabled = false
+            })
+        // create dialog box
+        val alert = dialogBuilder.create()
+        // set title for alert dialog box
+        alert.setTitle("Game ended!")
+        // show alert dialog
+        alert.show()
+    }
+
 }
